@@ -6,7 +6,7 @@
           v-for="(item, index) in item1"
           :key="item"
           class="menu-item"
-          :class="{ current: currentIndex === index }"
+          :class="{ current: currentIndexnum === index }"
           @click="selectMenu(index, $event)"
         >
           <span class="text border-1px">{{ item }}</span>
@@ -35,28 +35,20 @@ import BScroll from 'better-scroll'
 export default {
   data() {
     return {
-      goods: [],
+      leftclick: false,
       listHeight: [],
+      currentIndexnum: 0,
       scrollY: 0,
       item1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33, 44, 55, 66, 77, 88],
       item2: ['a', 'b', 'c', 'd', 'e', 'f']
     }
   },
-  computed: {
-    currentIndex() {
-      for (let i = 0; i < this.listHeight.length; i++) {
-        const height1 = this.listHeight[i]
-        const height2 = this.listHeight[i + 1]
-        if (this.scrollY >= height1 && this.scrollY < height2) {
-          this.scroolmenuitem(i)
-          return i
-        }
-      }
-      return 0
+  watch: {
+    currentIndexnum(value) {
+      console.log('watch')
+
+      this.scroolmenuitem(value - 3)
     }
-  },
-  beforeCreate() {
-    console.log(111, this)
   },
   created() {
     this.$nextTick(() => {
@@ -74,7 +66,18 @@ export default {
         probeType: 3
       })
       this.foodsScroll.on('scroll', pos => {
+        if (this.leftclick) {
+          return
+        }
         this.scrollY = Math.abs(Math.round(pos.y))
+
+        for (let i = 0; i < this.listHeight.length; i++) {
+          const height1 = this.listHeight[i]
+          const height2 = this.listHeight[i + 1]
+          if (this.scrollY >= height1 && this.scrollY < height2) {
+            this.currentIndexnum = i
+          }
+        }
       })
     },
     _calulateHeight() {
@@ -86,14 +89,12 @@ export default {
       this.listHeight.push(height)
       for (let i = 0; i < foodList.length; i++) {
         const item = foodList[i]
-
         height += item.clientHeight
         this.listHeight.push(height)
       }
     },
-    scroolmenuitem(index) {
-      console.log(index)
 
+    scroolmenuitem(index) {
       const menuitemlist = this.$refs.menuWrapper.getElementsByClassName(
         'menu-item'
       )
@@ -104,11 +105,16 @@ export default {
       if (!event._constructed) {
         return
       }
+      this.leftclick = true
+      this.currentIndexnum = index
       const foodList = this.$refs.foodsWrapper.getElementsByClassName(
         'food-list-hook'
       )
       const el = foodList[index]
       this.foodsScroll.scrollToElement(el, 300)
+      setTimeout(() => {
+        this.leftclick = false
+      }, 400)
     }
   }
 }
