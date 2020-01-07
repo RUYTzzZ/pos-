@@ -1,4 +1,6 @@
 module.exports = {
+  publicPath: './',
+  outputDir: 'docs',
   css: {
     loaderOptions: {
       stylus: {
@@ -25,5 +27,5 @@ module.exports = {
         }
       }
     }
-  },
+  }
 }
