@@ -101,6 +101,13 @@ export default {
       const el = menuitemlist[index]
       this.menuScroll.scrollToElement(el, 300)
     },
+    leftclickfalse() {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(false)
+        }, 500)
+      })
+    },
     selectMenu(index, event) {
       if (!event._constructed) {
         return
@@ -111,10 +118,10 @@ export default {
         'food-list-hook'
       )
       const el = foodList[index]
-      this.foodsScroll.scrollToElement(el, 300)
-      setTimeout(() => {
-        this.leftclick = false
-      }, 400)
+      this.foodsScroll.scrollToElement(el, 300);
+      (async() => {
+        this.leftclick = await this.leftclickfalse
+      })()
     }
   }
 }
