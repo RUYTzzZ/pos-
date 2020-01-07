@@ -15,7 +15,7 @@
   </div>
 </template>
 <script>
-import { seat } from '../api/Home'
+// import { seat } from '../api/Home'
 
 export default {
 
@@ -53,14 +53,14 @@ export default {
 
   computed: {},
   created() {
-    seat().then(data => {
-      this.$store.commit('setseatinfo', data.data)
-      console.log(data.data)
-    })
+    // seat().then(data => {
+    //   this.$store.commit('setseatinfo', data.data)
+    //   console.log(data.data)
+    // })
   },
 
   methods: {
-    // clickHandler(label) {
+    // clickHandler(Flabel) {
     //   // if you clicked home tab, then print 'Home'
     //   console.log(label);
     // },
@@ -88,7 +88,7 @@ body,
   overflow: scroll;
 }
 #tabbar {
-  font-size: 20px;
+   font-size: 20px;
   background-color: rgb(238, 238, 238);
 }
 </style>
