@@ -105,7 +105,7 @@ export default {
       return new Promise(resolve => {
         setTimeout(() => {
           resolve(false)
-        }, 500)
+        }, 600)
       })
     },
     selectMenu(index, event) {
@@ -117,10 +117,10 @@ export default {
       const foodList = this.$refs.foodsWrapper.getElementsByClassName(
         'food-list-hook'
       )
-      const el = foodList[index]
-      this.foodsScroll.scrollToElement(el, 300);
+      const el = foodList[index];
       (async() => {
-        this.leftclick = await this.leftclickfalse
+        this.foodsScroll.scrollToElement(el, 300)
+        this.leftclick = await this.leftclickfalse()
       })()
     }
   }
