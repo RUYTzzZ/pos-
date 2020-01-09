@@ -35,6 +35,7 @@ import BScroll from 'better-scroll'
 export default {
   data() {
     return {
+      cleartime: null,
       leftclick: false,
       listHeight: [],
       currentIndexnum: 0,
@@ -102,26 +103,27 @@ export default {
       this.menuScroll.scrollToElement(el, 300)
     },
     leftclickfalse() {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(false)
-        }, 600)
-      })
+      return setTimeout(() => {
+        this.leftclick = false
+      }, 600)
     },
     selectMenu(index, event) {
       if (!event._constructed) {
         return
       }
       this.leftclick = true
+      this.foodsScroll.stop()
+
       this.currentIndexnum = index
       const foodList = this.$refs.foodsWrapper.getElementsByClassName(
         'food-list-hook'
       )
-      const el = foodList[index];
-      (async() => {
-        this.foodsScroll.scrollToElement(el, 300)
-        this.leftclick = await this.leftclickfalse()
-      })()
+      const el = foodList[index]
+      this.foodsScroll.scrollToElement(el, 300)
+      clearTimeout(this.cleartime)
+      console.log(this.cleartime)
+
+      this.cleartime = this.leftclickfalse()
     }
   }
 }
@@ -190,7 +192,8 @@ border-1px($color) {
 
     .food-item {
       display: flex;
-      margin: 18px;
+      line-height: 36px;
+      box-sizing: border-box;
       padding-bottom: 18px;
       border-1px(rgba(7, 17, 27, 0.1));
     }
